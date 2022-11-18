@@ -2,21 +2,13 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 
-class Square extends React.Component {
-
-    handleClick(number){
-
-
-    }
-
-    render() {
-      return (
-        <button className="square" onClick={() => this.props.onClick()}>
-          {this.props.value}
-        </button>
-      );
-    }
-  }
+function Square(props) {
+  return (
+    <button className="square" onClick={props.onClick()}>
+      {props.value}
+    </button>
+  );
+}
   
   class Board extends React.Component {
     //we want to, as the app had already done in the beginning, to control
@@ -26,13 +18,18 @@ class Square extends React.Component {
         super(props);
         this.state = {
             squares: Array(9).fill(null),
+            xIsNext: true,
         }
     }
 
     handleClick(integer){
         const squares = this.state.squares.slice();
-        squares[i] = 'X';
-        this.setState({squares:squares});
+        squares[i] = this.state.xIsNext ? 'X': 'O';
+        this.setState({
+          squares:squares,
+          xIsNext: !this.state.xIsNext
+        }
+        );
     }
     //the Board will store the state of each square in an array of squares
     //so that when render() is run, the value of the squares will be output 
@@ -42,7 +39,7 @@ class Square extends React.Component {
     }
   
     render() {
-      const status = 'Next player: X';
+      const status = 'Next player: ' + (this.state.xIsNext ? 'X':'O');
   
       return (
         <div>
